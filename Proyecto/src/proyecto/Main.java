@@ -26,6 +26,9 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        VP ventanaPrincipal = new VP();
+        ventanaPrincipal.setVisible(true);
+        
         try {
 
             // Cargar el driver correspondiente
