@@ -38,12 +38,12 @@ public class Main {
 
             // Consulta simple
             Statement stmt = conn.createStatement();
-            ResultSet rset = stmt.executeQuery("select * from SYS.V_$VERSION");
+            ResultSet rset = stmt.executeQuery("select * from categorias");
             while (rset.next()) {
-                System.out.println(rset.getString(1));
+                System.out.println(rset.getString(1)+", "+rset.getString(2));
             }
             stmt.close();
-
+/*
             // Llamada a procedimiento almacenado
             // Creamos el statement
             String sql = "{ call gest_depart.insert_depart(?,?) }";
@@ -81,7 +81,7 @@ public class Main {
             
             System.out.println("INFO: Procedimiento ejecutado");
             
-            
+*/
             
         } catch (SQLException ex) {
             System.out.println("ERROR: No se ha podido ejecutar la consulta");
