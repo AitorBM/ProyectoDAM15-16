@@ -5,6 +5,14 @@
  */
 package proyecto;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author 7fprog08
@@ -14,8 +22,19 @@ public class VP extends javax.swing.JFrame {
     /**
      * Creates new form VP
      */
-    public VP() {
+    public VP() throws SQLException {
         initComponents();
+        DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+        
+        Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
+            System.out.println("INFO: Conexión abierta");
+        
+        Statement stmt = conn.createStatement();
+            ResultSet rset = stmt.executeQuery("select * from categorias");
+            while (rset.next()) {
+                jTAprueba.setText(jTAprueba.getText()+(rset.getString(1)+", "+rset.getString(2))+"\n");
+            }
+            stmt.close();
     }
 
     /**
@@ -27,20 +46,34 @@ public class VP extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTAprueba = new javax.swing.JTextArea();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTAprueba.setColumns(20);
+        jTAprueba.setRows(5);
+        jScrollPane1.setViewportView(jTAprueba);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -69,15 +102,21 @@ public class VP extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(VP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VP().setVisible(true);
+                try {
+                    new VP().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(VP.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTAprueba;
     // End of variables declaration//GEN-END:variables
 }
