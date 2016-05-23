@@ -23,7 +23,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
@@ -32,10 +32,10 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="14" max="32767" attributes="0"/>
-              <Component id="jPanel1" max="32767" attributes="0"/>
-              <EmptySpace pref="14" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -46,14 +46,14 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel1" max="32767" attributes="0"/>
-                      <Component id="jbVisualizarCategoria" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jbAnadirCategoria" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jbMoficarCategoria" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jbEliminarCategoria" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jbVisualizarPregunta" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jbAnadirPregunta" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jbModificarPregunta" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jbEliminarPregunta" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jLabel1" alignment="1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -65,14 +65,14 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jbVisualizarCategoria" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbVisualizarPregunta" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jbAnadirCategoria" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbAnadirPregunta" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                  <Component id="jbMoficarCategoria" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbModificarPregunta" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jbEliminarCategoria" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="18" max="32767" attributes="0"/>
+                  <Component id="jbEliminarPregunta" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -81,31 +81,25 @@
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Gesti&#xf3;n de categorias"/>
+            <Property name="text" type="java.lang.String" value="Gesti&#xf3;n de preguntas"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jbVisualizarCategoria">
+        <Component class="javax.swing.JButton" name="jbVisualizarPregunta">
           <Properties>
             <Property name="text" type="java.lang.String" value="Visualizar"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbVisualizarCategoriaActionPerformed"/>
-          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jbAnadirCategoria">
+        <Component class="javax.swing.JButton" name="jbAnadirPregunta">
           <Properties>
             <Property name="text" type="java.lang.String" value="A&#xf1;adir"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbAnadirCategoriaActionPerformed"/>
-          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jbMoficarCategoria">
+        <Component class="javax.swing.JButton" name="jbModificarPregunta">
           <Properties>
             <Property name="text" type="java.lang.String" value="Modificar"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jbEliminarCategoria">
+        <Component class="javax.swing.JButton" name="jbEliminarPregunta">
           <Properties>
             <Property name="text" type="java.lang.String" value="Eliminar"/>
           </Properties>

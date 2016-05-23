@@ -40,7 +40,7 @@ public class VP extends javax.swing.JFrame {
         jpPrincipal = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jbCategorias = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jbPreguntas = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -56,7 +56,12 @@ public class VP extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Preguntas");
+        jbPreguntas.setText("Preguntas");
+        jbPreguntas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbPreguntasActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Exportado:");
 
@@ -78,7 +83,7 @@ public class VP extends javax.swing.JFrame {
                         .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jbPreguntas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jbCategorias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -90,7 +95,7 @@ public class VP extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbCategorias)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3)
+                .addComponent(jbPreguntas)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -105,16 +110,16 @@ public class VP extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(86, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(53, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jpPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -123,11 +128,15 @@ public class VP extends javax.swing.JFrame {
 
     private void jbCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCategoriasActionPerformed
         // TODO add your handling code here:
-        jpPrincipal.setVisible(false);
-        
-        PCategorias pc = new PCategorias();
-        
+        VCategorias vCat = new VCategorias();
+        vCat.setVisible(true);
     }//GEN-LAST:event_jbCategoriasActionPerformed
+
+    private void jbPreguntasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPreguntasActionPerformed
+        // TODO add your handling code here:
+        VPreguntas vPre = new VPreguntas();
+        vPre.setVisible(true);
+    }//GEN-LAST:event_jbPreguntasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -169,12 +178,12 @@ public class VP extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JButton jbCategorias;
+    private javax.swing.JButton jbPreguntas;
     private javax.swing.JPanel jpPrincipal;
     // End of variables declaration//GEN-END:variables
 }
