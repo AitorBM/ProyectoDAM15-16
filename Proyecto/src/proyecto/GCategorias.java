@@ -8,7 +8,11 @@ package proyecto;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,13 +26,62 @@ public class GCategorias extends javax.swing.JFrame {
      * Creates new form GCategorias
      * @throws java.sql.SQLException
      */
-    static Connection conn;
-    public GCategorias() throws SQLException {
+    private Connection conn;
+    private int opcion;
+    private int n = 0;
+    private List<Categoria> cat = new ArrayList<>();
+    
+    public GCategorias(int opcion) throws SQLException {
+        this.opcion = opcion;
         initComponents();
+        
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-        //Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@SrvOracle:1521:orcl", "noc08", "noc08");
-        conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
-            System.out.println("INFO: Conexión abierta");
+        conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
+        //conn = DriverManager.getConnection("jdbc:oracle:thin:@SrvOracle:1521:orcl", "noc08", "noc08");
+        //conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
+        System.out.println("INFO: Conexión abierta");
+        
+        Statement stmt = conn.createStatement();
+            ResultSet rset = stmt.executeQuery("select * from categorias");
+            while (rset.next()) {
+                Categoria c = new Categoria();
+                c.setId(Integer.parseInt(rset.getString(1)));
+                c.setNombre(rset.getString(2));
+                cat.add(c);
+            }
+            stmt.close();
+        
+        switch (opcion) {
+            case 0:
+                jtfID.setText(String.valueOf(cat.get(n).getId()));
+                jtfNombre.setText(cat.get(n).getNombre());
+                jtfID.setEditable(false);
+                jtfNombre.setEditable(false);
+                jbLimpiar.setVisible(false);
+                break;
+                
+            case 1:
+                jbAtras.setVisible(false);
+                jbAlante.setVisible(false);
+                jtfID.setEnabled(false);
+                break;
+                
+            case 2:
+                jtfID.setText(String.valueOf(cat.get(n).getId()));
+                jtfNombre.setText(cat.get(n).getNombre());
+                jtfID.setEditable(false);
+                break;
+                
+            case 3:
+                jtfID.setText(String.valueOf(cat.get(n).getId()));
+                jtfNombre.setText(cat.get(n).getNombre());
+                jtfID.setEditable(false);
+                jtfNombre.setEditable(false);
+                jbLimpiar.setVisible(false);
+                break;
+            default:
+                throw new AssertionError();
+        }
     }
 
     /**
@@ -40,14 +93,47 @@ public class GCategorias extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jbAceptar = new javax.swing.JButton();
+        jbLimpiar = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jbAtras = new javax.swing.JButton();
+        jbAlante = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jtfID = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jtfNombre = new javax.swing.JTextField();
-        jbAceptar = new javax.swing.JButton();
+        jbCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jbAceptar.setText("Aceptar");
+        jbAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbAceptarActionPerformed(evt);
+            }
+        });
+
+        jbLimpiar.setText("Limpiar");
+        jbLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbLimpiarActionPerformed(evt);
+            }
+        });
+
+        jbAtras.setText("<");
+        jbAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbAtrasActionPerformed(evt);
+            }
+        });
+
+        jbAlante.setText(">");
+        jbAlante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbAlanteActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("ID");
 
@@ -82,10 +168,39 @@ public class GCategorias extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jbAceptar.setText("Aceptar");
-        jbAceptar.addActionListener(new java.awt.event.ActionListener() {
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jbAtras)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbAlante)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jbAtras))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jbAlante)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jbCancelar.setText("Cancelar");
+        jbCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbAceptarActionPerformed(evt);
+                jbCancelarActionPerformed(evt);
             }
         });
 
@@ -95,87 +210,138 @@ public class GCategorias extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jbCancelar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jbLimpiar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jbAceptar))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jbAceptar)
-                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jbAceptar)
-                .addContainerGap())
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbAceptar)
+                    .addComponent(jbLimpiar)
+                    .addComponent(jbCancelar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAceptarActionPerformed
         // TODO add your handling code here:
+        switch (opcion) {
+            case 0:
+                this.dispose();
+                break;
+                
+            case 1:
+                String sql = "{ CALL GEST_PROYECTO_GIFT.INSERT_CATEGORIA(?) }";
+                CallableStatement cs;
+                try {
+                    cs = conn.prepareCall(sql);
+                    cs.setString(1, jtfNombre.getText());
+                    cs.execute();
+                    conn.close();
+                    System.out.println("INFO: Procedimiento ejecutado");
+                } catch (SQLException ex) {
+                    System.out.println("ERROR: No se ha podido ejecutar la consulta");
+                    Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                this.dispose();
+                break;
+                
+            case 2:
+                sql = "{ CALL GEST_PROYECTO_GIFT.UPDATE_CATEGORIA(?,?) }";
+                try {
+                    cs = conn.prepareCall(sql);
+                    cs.setString(1, cat.get(n).getNombre());
+                    cs.setString(2, jtfNombre.getText());
+                    cs.execute();
+                    conn.close();
+                    System.out.println("INFO: Procedimiento ejecutado");
+                } catch (SQLException ex) {
+                    System.out.println("ERROR: No se ha podido ejecutar la consulta");
+                    Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                this.dispose();
+                break;
+                
+            case 3:
+                sql = "{ CALL GEST_PROYECTO_GIFT.DELETE_CATEGORIA(?) }";
+                try {
+                    cs = conn.prepareCall(sql);
+                    cs.setString(1, jtfNombre.getText());
+                    cs.execute();
+                    conn.close();
+                    System.out.println("INFO: Procedimiento ejecutado");
+                } catch (SQLException ex) {
+                    System.out.println("ERROR: No se ha podido ejecutar la consulta");
+                    Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                this.dispose();
+                break;
+            default:
+                throw new AssertionError();
+        }
+    }//GEN-LAST:event_jbAceptarActionPerformed
 
-            String sql = "{ CALL GEST_PROYECTO_GIFT.INSERT_CATEGORIA(?) }";
-            CallableStatement cs;
+    private void jbLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbLimpiarActionPerformed
+        // TODO add your handling code here:
+        jtfID.setText("");
+        jtfNombre.setText("");
+    }//GEN-LAST:event_jbLimpiarActionPerformed
+
+    private void jbAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAtrasActionPerformed
+        // TODO add your handling code here:
+        if (n > 0) {
+            n-=1;
+            jtfID.setText(String.valueOf(cat.get(n).getId()));
+            jtfNombre.setText(cat.get(n).getNombre());
+        }
+        
+    }//GEN-LAST:event_jbAtrasActionPerformed
+
+    private void jbAlanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAlanteActionPerformed
+        // TODO add your handling code here:
+        if (n < cat.size()-1) {
+            n+=1;
+            jtfID.setText(String.valueOf(cat.get(n).getId()));
+            jtfNombre.setText(cat.get(n).getNombre());
+        }
+    }//GEN-LAST:event_jbAlanteActionPerformed
+
+    private void jbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarActionPerformed
         try {
-            cs = conn.prepareCall(sql);
-            cs.setString(1,jtfNombre.getText());
-            cs.execute();
-            
+            // TODO add your handling code here:
+            conn.close();
         } catch (SQLException ex) {
             Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("INFO: Procedimiento ejecutado");
-        jtfNombre.setText("");
-    }//GEN-LAST:event_jbAceptarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jbCancelarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GCategorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GCategorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GCategorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GCategorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new GCategorias().setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JButton jbAceptar;
+    private javax.swing.JButton jbAlante;
+    private javax.swing.JButton jbAtras;
+    private javax.swing.JButton jbCancelar;
+    private javax.swing.JButton jbLimpiar;
     private javax.swing.JTextField jtfID;
     private javax.swing.JTextField jtfNombre;
     // End of variables declaration//GEN-END:variables

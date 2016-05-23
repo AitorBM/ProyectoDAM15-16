@@ -5,11 +5,7 @@
  */
 package proyecto;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +17,7 @@ public class VP extends javax.swing.JFrame {
 
     /**
      * Creates new form VP
+     * @throws java.sql.SQLException
      */
     public VP() throws SQLException {
         initComponents();

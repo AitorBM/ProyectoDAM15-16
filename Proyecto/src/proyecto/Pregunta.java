@@ -46,5 +46,12 @@ public class Pregunta {
     public void setTexto(String texto) {
         this.texto = texto;
     }
+
+    /**
+     * @param categoria the categoria to set
+     */
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
     
 }

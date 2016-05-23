@@ -40,12 +40,32 @@ public class VPreguntas extends javax.swing.JFrame {
         jLabel1.setText("Gestión de preguntas");
 
         jbVisualizarPregunta.setText("Visualizar");
+        jbVisualizarPregunta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbVisualizarPreguntaActionPerformed(evt);
+            }
+        });
 
         jbAnadirPregunta.setText("Añadir");
+        jbAnadirPregunta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbAnadirPreguntaActionPerformed(evt);
+            }
+        });
 
         jbModificarPregunta.setText("Modificar");
+        jbModificarPregunta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbModificarPreguntaActionPerformed(evt);
+            }
+        });
 
         jbEliminarPregunta.setText("Eliminar");
+        jbEliminarPregunta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEliminarPreguntaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -97,6 +117,26 @@ public class VPreguntas extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbVisualizarPreguntaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbVisualizarPreguntaActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jbVisualizarPreguntaActionPerformed
+
+    private void jbAnadirPreguntaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAnadirPreguntaActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jbAnadirPreguntaActionPerformed
+
+    private void jbModificarPreguntaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarPreguntaActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jbModificarPreguntaActionPerformed
+
+    private void jbEliminarPreguntaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarPreguntaActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jbEliminarPreguntaActionPerformed
 
     /**
      * @param args the command line arguments

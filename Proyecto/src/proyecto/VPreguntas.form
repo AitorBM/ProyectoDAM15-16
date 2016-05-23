@@ -88,21 +88,33 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Visualizar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbVisualizarPreguntaActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jbAnadirPregunta">
           <Properties>
             <Property name="text" type="java.lang.String" value="A&#xf1;adir"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbAnadirPreguntaActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jbModificarPregunta">
           <Properties>
             <Property name="text" type="java.lang.String" value="Modificar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbModificarPreguntaActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jbEliminarPregunta">
           <Properties>
             <Property name="text" type="java.lang.String" value="Eliminar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbEliminarPreguntaActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

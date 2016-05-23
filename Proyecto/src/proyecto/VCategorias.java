@@ -58,8 +58,18 @@ public class VCategorias extends javax.swing.JFrame {
         });
 
         jbMoficarCategoria.setText("Modificar");
+        jbMoficarCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbMoficarCategoriaActionPerformed(evt);
+            }
+        });
 
         jbEliminarCategoria.setText("Eliminar");
+        jbEliminarCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEliminarCategoriaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -115,16 +125,44 @@ public class VCategorias extends javax.swing.JFrame {
     private void jbAnadirCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAnadirCategoriaActionPerformed
         try {
             // TODO add your handling code here:
-            GCategorias asd = new GCategorias();
-            asd.setVisible(true);
+            GCategorias gestorCategorias = new GCategorias(1);
+            gestorCategorias.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(VCategorias.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jbAnadirCategoriaActionPerformed
 
     private void jbVisualizarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbVisualizarCategoriaActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            GCategorias gestorCategorias = new GCategorias(0);
+            gestorCategorias.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(VCategorias.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jbVisualizarCategoriaActionPerformed
+
+    private void jbEliminarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarCategoriaActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            GCategorias gestorCategorias = new GCategorias(3);
+            gestorCategorias.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(VCategorias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jbEliminarCategoriaActionPerformed
+
+    private void jbMoficarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbMoficarCategoriaActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            GCategorias gestorCategorias = new GCategorias(2);
+            gestorCategorias.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(VCategorias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jbMoficarCategoriaActionPerformed
 
     /**
      * @param args the command line arguments
