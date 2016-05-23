@@ -15,4 +15,47 @@ public class Respuesta {
     private int correcta;
     
     private Pregunta pregunta;
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the texto
+     */
+    public String getTexto() {
+        return texto;
+    }
+
+    /**
+     * @param texto the texto to set
+     */
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    /**
+     * @return the correcta
+     */
+    public int getCorrecta() {
+        return correcta;
+    }
+
+    /**
+     * @param correcta the correcta to set
+     */
+    public void setCorrecta(int correcta) {
+        this.correcta = correcta;
+    }
+    
 }
