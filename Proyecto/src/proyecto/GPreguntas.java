@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 /**
  *
@@ -30,6 +32,43 @@ public class GPreguntas extends javax.swing.JFrame {
     private int n = 0;
     private List<Pregunta> pre = new ArrayList<>();
     private List<Categoria> cat = new ArrayList<>();
+    private List<Respuesta> res = new ArrayList<>();
+    
+    private void ActualizarPreguntas() throws SQLException{
+        int i;
+        Statement stmt = conn.createStatement();
+        ResultSet rset = stmt.executeQuery("select * from preguntas");
+            while (rset.next()) {
+                Pregunta p = new Pregunta();
+                p.setId(Integer.parseInt(rset.getString(1)));
+                p.setTexto(rset.getString(2));
+                i = Integer.parseInt(rset.getString(3));
+                p.setCategoria(cat.get(i-1));
+                pre.add(p);
+            }
+            stmt.close();
+    }
+    
+    private void addRes(JRadioButton rb, JTextField tf) throws SQLException{
+        int correcta = 0;
+        if (rb.isSelected()) {
+            correcta = 1;
+        }
+        int respuesta = pre.get(pre.size()-1).getId();
+        String sql = "{ CALL GEST_PROYECTO_GIFT.INSERT_RESPUESTA(?,?,?) }";
+        CallableStatement cs;
+                    try {
+                    cs = conn.prepareCall(sql);
+                    cs.setInt(1, respuesta);
+                    cs.setString(2, tf.getText());
+                    cs.setInt(3, correcta);
+                    cs.execute();
+                    System.out.println("INFO: Procedimiento ejecutado");
+                    } catch (SQLException ex) {
+                    System.out.println("ERROR: No se ha podido ejecutar la consulta");
+                    Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+    }
     
     public GPreguntas(int opcion) throws SQLException {
         this.opcion = opcion;
@@ -37,9 +76,9 @@ public class GPreguntas extends javax.swing.JFrame {
         initComponents();
         
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-        //conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
+        conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
         //conn = DriverManager.getConnection("jdbc:oracle:thin:@SrvOracle:1521:orcl", "noc08", "noc08");
-        conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
+        //conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
         System.out.println("INFO: Conexión abierta");
         
         Statement stmt = conn.createStatement();
@@ -52,18 +91,18 @@ public class GPreguntas extends javax.swing.JFrame {
             }
             stmt.close();
             
-        int i;
-        stmt = conn.createStatement();
-        rset = stmt.executeQuery("select * from preguntas");
+            stmt = conn.createStatement();
+            rset = stmt.executeQuery("select * from respuestas");
             while (rset.next()) {
-                Pregunta p = new Pregunta();
-                p.setId(Integer.parseInt(rset.getString(1)));
-                p.setTexto(rset.getString(2));
-                i = Integer.parseInt(rset.getString(3));
-                p.setCategoria(cat.get(i-1));
-                pre.add(p);
+                Respuesta r = new Respuesta();
+                r.setId(Integer.parseInt(rset.getString(1)));
+                r.setTexto(rset.getString(2));
+                r.setCorrecta(rset.getInt(3));
+                res.add(r);
             }
             stmt.close();
+            
+            ActualizarPreguntas();
             
             jcbCategoriaCB.removeAllItems();
                 for (Categoria cate : cat) {
@@ -75,6 +114,10 @@ public class GPreguntas extends javax.swing.JFrame {
                 jtfID.setText(String.valueOf(pre.get(n).getId()));
                 jtfTexto.setText(pre.get(n).getTexto());
                 jtfCategoria.setText(pre.get(n).getCategoria().getNombre());
+                jtfRes1.setText(pre.get(n).getRespuestas().get(0).getTexto());
+                if (pre.get(n).getRespuestas().get(0).getCorrecta() == 0) {
+                    
+                }
                 jtfID.setEditable(false);
                 jtfTexto.setEditable(false);
                 jtfCategoria.setEditable(false);
@@ -97,6 +140,7 @@ public class GPreguntas extends javax.swing.JFrame {
                 jtfCategoria.setEditable(false);
                 jlCategoriaCB.setVisible(false);
                 jcbCategoriaCB.setVisible(false);
+                jpRespuestas.setVisible(false);
                 break;
             case 3:
                 jtfID.setText(String.valueOf(pre.get(n).getId()));
@@ -108,6 +152,7 @@ public class GPreguntas extends javax.swing.JFrame {
                 jbLimpiar.setVisible(false);
                 jlCategoriaCB.setVisible(false);
                 jcbCategoriaCB.setVisible(false);
+                jpRespuestas.setVisible(false);
                 break;
             default:
                 throw new AssertionError();
@@ -123,6 +168,7 @@ public class GPreguntas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        bgCorrecta = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jtfID = new javax.swing.JTextField();
@@ -137,6 +183,21 @@ public class GPreguntas extends javax.swing.JFrame {
         jbAceptar = new javax.swing.JButton();
         jbLimpiar = new javax.swing.JButton();
         jbCancelar = new javax.swing.JButton();
+        jpRespuestas = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jrbCorrecta1 = new javax.swing.JRadioButton();
+        jrbCorrecta2 = new javax.swing.JRadioButton();
+        jrbCorrecta3 = new javax.swing.JRadioButton();
+        jrbCorrecta4 = new javax.swing.JRadioButton();
+        jLabel4 = new javax.swing.JLabel();
+        jtfRes1 = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jtfRes2 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jtfRes3 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jtfRes4 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -177,20 +238,19 @@ public class GPreguntas extends javax.swing.JFrame {
                         .addComponent(jlCategoriaCB)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jcbCategoriaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel1))
-                            .addGap(23, 23, 23)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jtfTexto, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jtfID, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jlCategoria)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jtfCategoria))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfTexto, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtfID, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jlCategoria)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfCategoria)))
+                .addGap(14, 14, 14)
                 .addComponent(jbAlante)
                 .addContainerGap())
         );
@@ -215,7 +275,7 @@ public class GPreguntas extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlCategoriaCB)
                     .addComponent(jcbCategoriaCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jbAceptar.setText("Aceptar");
@@ -239,33 +299,136 @@ public class GPreguntas extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setText("Correcta");
+
+        bgCorrecta.add(jrbCorrecta1);
+        jrbCorrecta1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        bgCorrecta.add(jrbCorrecta2);
+        jrbCorrecta2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        bgCorrecta.add(jrbCorrecta3);
+        jrbCorrecta3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        bgCorrecta.add(jrbCorrecta4);
+        jrbCorrecta4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        jLabel4.setText("Res.1");
+
+        jLabel5.setText("Res.2");
+
+        jLabel6.setText("Res.3");
+
+        jLabel7.setText("Res.4");
+
+        jLabel8.setText("Respuestas");
+
+        javax.swing.GroupLayout jpRespuestasLayout = new javax.swing.GroupLayout(jpRespuestas);
+        jpRespuestas.setLayout(jpRespuestasLayout);
+        jpRespuestasLayout.setHorizontalGroup(
+            jpRespuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpRespuestasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpRespuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpRespuestasLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfRes1))
+                    .addGroup(jpRespuestasLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfRes2))
+                    .addGroup(jpRespuestasLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfRes3))
+                    .addGroup(jpRespuestasLayout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfRes4))
+                    .addGroup(jpRespuestasLayout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpRespuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jrbCorrecta1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jrbCorrecta2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jrbCorrecta3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jrbCorrecta4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jpRespuestasLayout.setVerticalGroup(
+            jpRespuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpRespuestasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpRespuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jpRespuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel7)
+                        .addComponent(jtfRes4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jpRespuestasLayout.createSequentialGroup()
+                        .addGroup(jpRespuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel8))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jpRespuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jpRespuestasLayout.createSequentialGroup()
+                                .addGroup(jpRespuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jpRespuestasLayout.createSequentialGroup()
+                                        .addGroup(jpRespuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jrbCorrecta1)
+                                            .addGroup(jpRespuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(jLabel4)
+                                                .addComponent(jtfRes1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jrbCorrecta2))
+                                    .addGroup(jpRespuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel5)
+                                        .addComponent(jtfRes2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jrbCorrecta3))
+                            .addGroup(jpRespuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel6)
+                                .addComponent(jtfRes3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jrbCorrecta4)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jpRespuestas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jbCancelar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jbLimpiar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jbAceptar))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jbAceptar)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jpRespuestas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbAceptar)
                     .addComponent(jbLimpiar)
                     .addComponent(jbCancelar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         pack();
@@ -307,12 +470,18 @@ public class GPreguntas extends javax.swing.JFrame {
                     cs.setString(1, categoria);
                     cs.setString(2, jtfTexto.getText());
                     cs.execute();
-                    conn.close();
+                    ActualizarPreguntas();
                     System.out.println("INFO: Procedimiento ejecutado");
+                    addRes(jrbCorrecta1, jtfRes1);
+                    addRes(jrbCorrecta2, jtfRes2);
+                    addRes(jrbCorrecta3, jtfRes3);
+                    addRes(jrbCorrecta4, jtfRes4);
+                    conn.close();
                 } catch (SQLException ex) {
                     System.out.println("ERROR: No se ha podido ejecutar la consulta");
                     Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
                 this.dispose();
                 break;
             case 2:
@@ -369,8 +538,15 @@ public class GPreguntas extends javax.swing.JFrame {
     }//GEN-LAST:event_jbCancelarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup bgCorrecta;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jbAceptar;
     private javax.swing.JButton jbAlante;
@@ -380,8 +556,17 @@ public class GPreguntas extends javax.swing.JFrame {
     private javax.swing.JComboBox jcbCategoriaCB;
     private javax.swing.JLabel jlCategoria;
     private javax.swing.JLabel jlCategoriaCB;
+    private javax.swing.JPanel jpRespuestas;
+    private javax.swing.JRadioButton jrbCorrecta1;
+    private javax.swing.JRadioButton jrbCorrecta2;
+    private javax.swing.JRadioButton jrbCorrecta3;
+    private javax.swing.JRadioButton jrbCorrecta4;
     private javax.swing.JTextField jtfCategoria;
     private javax.swing.JTextField jtfID;
+    private javax.swing.JTextField jtfRes1;
+    private javax.swing.JTextField jtfRes2;
+    private javax.swing.JTextField jtfRes3;
+    private javax.swing.JTextField jtfRes4;
     private javax.swing.JTextField jtfTexto;
     // End of variables declaration//GEN-END:variables
 }

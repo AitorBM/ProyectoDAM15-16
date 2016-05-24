@@ -60,5 +60,12 @@ public class Pregunta {
     public Categoria getCategoria() {
         return categoria;
     }
+
+    /**
+     * @return the respuestas
+     */
+    public List<Respuesta> getRespuestas() {
+        return respuestas;
+    }
     
 }
