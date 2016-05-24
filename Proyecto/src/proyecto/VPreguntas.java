@@ -5,6 +5,10 @@
  */
 package proyecto;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Aitor
@@ -14,6 +18,17 @@ public class VPreguntas extends javax.swing.JFrame {
     /**
      * Creates new form VPreguntas
      */
+    
+    private void EjecutarAccion(int i){
+        try {
+            // TODO add your handling code here:
+            GPreguntas gestorPreguntas = new GPreguntas(i);
+            gestorPreguntas.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(VCategorias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public VPreguntas() {
         initComponents();
     }
@@ -120,58 +135,23 @@ public class VPreguntas extends javax.swing.JFrame {
 
     private void jbVisualizarPreguntaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbVisualizarPreguntaActionPerformed
         // TODO add your handling code here:
-        
+        EjecutarAccion(0);
     }//GEN-LAST:event_jbVisualizarPreguntaActionPerformed
 
     private void jbAnadirPreguntaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAnadirPreguntaActionPerformed
         // TODO add your handling code here:
-        
+        EjecutarAccion(1);
     }//GEN-LAST:event_jbAnadirPreguntaActionPerformed
 
     private void jbModificarPreguntaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarPreguntaActionPerformed
         // TODO add your handling code here:
-        
+        EjecutarAccion(2);
     }//GEN-LAST:event_jbModificarPreguntaActionPerformed
 
     private void jbEliminarPreguntaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarPreguntaActionPerformed
         // TODO add your handling code here:
-        
+        EjecutarAccion(3);
     }//GEN-LAST:event_jbEliminarPreguntaActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VPreguntas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VPreguntas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VPreguntas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VPreguntas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VPreguntas().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

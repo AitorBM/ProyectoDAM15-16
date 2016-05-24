@@ -5,6 +5,7 @@
  */
 package proyecto;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -12,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,12 +33,13 @@ public class GPreguntas extends javax.swing.JFrame {
     
     public GPreguntas(int opcion) throws SQLException {
         this.opcion = opcion;
+        
         initComponents();
         
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-        conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
+        //conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
         //conn = DriverManager.getConnection("jdbc:oracle:thin:@SrvOracle:1521:orcl", "noc08", "noc08");
-        //conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
+        conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
         System.out.println("INFO: Conexión abierta");
         
         Statement stmt = conn.createStatement();
@@ -47,17 +51,67 @@ public class GPreguntas extends javax.swing.JFrame {
                 cat.add(c);
             }
             stmt.close();
-        
+            
+        int i;
         stmt = conn.createStatement();
         rset = stmt.executeQuery("select * from preguntas");
             while (rset.next()) {
                 Pregunta p = new Pregunta();
                 p.setId(Integer.parseInt(rset.getString(1)));
                 p.setTexto(rset.getString(2));
-                p.setCategoria(rset.getString(3));
+                i = Integer.parseInt(rset.getString(3));
+                p.setCategoria(cat.get(i-1));
                 pre.add(p);
             }
             stmt.close();
+            
+            jcbCategoriaCB.removeAllItems();
+                for (Categoria cate : cat) {
+                    jcbCategoriaCB.addItem(cate.getNombre());
+                }
+            
+        switch (opcion) {
+            case 0:
+                jtfID.setText(String.valueOf(pre.get(n).getId()));
+                jtfTexto.setText(pre.get(n).getTexto());
+                jtfCategoria.setText(pre.get(n).getCategoria().getNombre());
+                jtfID.setEditable(false);
+                jtfTexto.setEditable(false);
+                jtfCategoria.setEditable(false);
+                jbLimpiar.setVisible(false);
+                jlCategoriaCB.setVisible(false);
+                jcbCategoriaCB.setVisible(false);
+                break;
+            case 1:
+                jbAtras.setVisible(false);
+                jbAlante.setVisible(false);
+                jtfID.setEnabled(false);
+                jlCategoria.setVisible(false);
+                jtfCategoria.setVisible(false);
+                break;
+            case 2:
+                jtfID.setText(String.valueOf(pre.get(n).getId()));
+                jtfTexto.setText(pre.get(n).getTexto());
+                jtfCategoria.setText(pre.get(n).getCategoria().getNombre());
+                jtfID.setEditable(false);
+                jtfCategoria.setEditable(false);
+                jlCategoriaCB.setVisible(false);
+                jcbCategoriaCB.setVisible(false);
+                break;
+            case 3:
+                jtfID.setText(String.valueOf(pre.get(n).getId()));
+                jtfTexto.setText(pre.get(n).getTexto());
+                jtfCategoria.setText(pre.get(n).getCategoria().getNombre());
+                jtfID.setEditable(false);
+                jtfTexto.setEditable(false);
+                jtfCategoria.setEditable(false);
+                jbLimpiar.setVisible(false);
+                jlCategoriaCB.setVisible(false);
+                jcbCategoriaCB.setVisible(false);
+                break;
+            default:
+                throw new AssertionError();
+        }
     }
 
     /**
@@ -74,25 +128,41 @@ public class GPreguntas extends javax.swing.JFrame {
         jtfID = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jtfTexto = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
+        jlCategoria = new javax.swing.JLabel();
         jtfCategoria = new javax.swing.JTextField();
         jbAlante = new javax.swing.JButton();
         jbAtras = new javax.swing.JButton();
+        jlCategoriaCB = new javax.swing.JLabel();
+        jcbCategoriaCB = new javax.swing.JComboBox();
         jbAceptar = new javax.swing.JButton();
         jbLimpiar = new javax.swing.JButton();
         jbCancelar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("ID");
 
         jLabel2.setText("Texto");
 
-        jLabel3.setText("Categoría");
+        jlCategoria.setText("Categoría");
 
         jbAlante.setText(">");
+        jbAlante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbAlanteActionPerformed(evt);
+            }
+        });
 
         jbAtras.setText("<");
+        jbAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbAtrasActionPerformed(evt);
+            }
+        });
+
+        jlCategoriaCB.setText("Categoría");
+
+        jcbCategoriaCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -104,18 +174,23 @@ public class GPreguntas extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addGap(23, 23, 23)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfTexto, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtfID, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addComponent(jlCategoriaCB)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtfCategoria)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jcbCategoriaCB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel1))
+                            .addGap(23, 23, 23)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jtfTexto, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jtfID, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jlCategoria)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jtfCategoria))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(jbAlante)
                 .addContainerGap())
         );
@@ -134,16 +209,35 @@ public class GPreguntas extends javax.swing.JFrame {
                     .addComponent(jbAtras))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
+                    .addComponent(jlCategoria)
                     .addComponent(jtfCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlCategoriaCB)
+                    .addComponent(jcbCategoriaCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jbAceptar.setText("Aceptar");
+        jbAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbAceptarActionPerformed(evt);
+            }
+        });
 
         jbLimpiar.setText("Limpiar");
+        jbLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbLimpiarActionPerformed(evt);
+            }
+        });
 
         jbCancelar.setText("Cancelar");
+        jbCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -166,7 +260,7 @@ public class GPreguntas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbAceptar)
                     .addComponent(jbLimpiar)
@@ -175,53 +269,117 @@ public class GPreguntas extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GPreguntas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GPreguntas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GPreguntas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GPreguntas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void jbAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAtrasActionPerformed
+        // TODO add your handling code here:
+        if (n > 0) {
+            n-=1;
+            jtfID.setText(String.valueOf(pre.get(n).getId()));
+            jtfTexto.setText(pre.get(n).getTexto());
+            jtfCategoria.setText(pre.get(n).getCategoria().getNombre());
         }
-        //</editor-fold>
+    }//GEN-LAST:event_jbAtrasActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GPreguntas().setVisible(true);
-            }
-        });
-    }
+    private void jbAlanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAlanteActionPerformed
+        // TODO add your handling code here:
+        if (n < pre.size()-1) {
+            n+=1;
+            jtfID.setText(String.valueOf(pre.get(n).getId()));
+            jtfTexto.setText(pre.get(n).getTexto());
+            jtfCategoria.setText(pre.get(n).getCategoria().getNombre());
+        }
+    }//GEN-LAST:event_jbAlanteActionPerformed
+
+    private void jbAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAceptarActionPerformed
+        // TODO add your handling code here:
+        switch (opcion) {
+            case 0:
+                this.dispose();
+                break;
+            case 1:
+                String categoria = String.valueOf(jcbCategoriaCB.getSelectedItem());
+                String sql = "{ CALL GEST_PROYECTO_GIFT.INSERT_PREGUNTA(?,?) }";
+                CallableStatement cs;
+                try {
+                    cs = conn.prepareCall(sql);
+                    cs.setString(1, categoria);
+                    cs.setString(2, jtfTexto.getText());
+                    cs.execute();
+                    conn.close();
+                    System.out.println("INFO: Procedimiento ejecutado");
+                } catch (SQLException ex) {
+                    System.out.println("ERROR: No se ha podido ejecutar la consulta");
+                    Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                this.dispose();
+                break;
+            case 2:
+                sql = "{ CALL GEST_PROYECTO_GIFT.UPDATE_PREGUNTA(?,?) }";
+                try {
+                    cs = conn.prepareCall(sql);
+                    cs.setInt(1, pre.get(n).getId());
+                    cs.setString(2, jtfTexto.getText());
+                    cs.execute();
+                    conn.close();
+                    System.out.println("INFO: Procedimiento ejecutado");
+                } catch (SQLException ex) {
+                    System.out.println("ERROR: No se ha podido ejecutar la consulta");
+                    Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                this.dispose();
+                break;
+            case 3:
+                sql = "{ CALL GEST_PROYECTO_GIFT.DELETE_PREGUNTA(?) }";
+                try {
+                    cs = conn.prepareCall(sql);
+                    cs.setInt(1, pre.get(n).getId());
+                    cs.execute();
+                    conn.close();
+                    System.out.println("INFO: Procedimiento ejecutado");
+                } catch (SQLException ex) {
+                    System.out.println("ERROR: No se ha podido ejecutar la consulta");
+                    Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                this.dispose();
+                break;
+            default:
+                throw new AssertionError();
+        }
+    }//GEN-LAST:event_jbAceptarActionPerformed
+
+    private void jbLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbLimpiarActionPerformed
+        // TODO add your handling code here:
+        jtfID.setText("");
+        jtfTexto.setText("");
+        jtfCategoria.setText("");
+    }//GEN-LAST:event_jbLimpiarActionPerformed
+
+    private void jbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
+    }//GEN-LAST:event_jbCancelarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jbAceptar;
     private javax.swing.JButton jbAlante;
     private javax.swing.JButton jbAtras;
     private javax.swing.JButton jbCancelar;
     private javax.swing.JButton jbLimpiar;
+    private javax.swing.JComboBox jcbCategoriaCB;
+    private javax.swing.JLabel jlCategoria;
+    private javax.swing.JLabel jlCategoriaCB;
     private javax.swing.JTextField jtfCategoria;
     private javax.swing.JTextField jtfID;
     private javax.swing.JTextField jtfTexto;

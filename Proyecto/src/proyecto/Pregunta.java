@@ -53,5 +53,12 @@ public class Pregunta {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
+
+    /**
+     * @return the categoria
+     */
+    public Categoria getCategoria() {
+        return categoria;
+    }
     
 }
