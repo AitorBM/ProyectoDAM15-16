@@ -57,5 +57,12 @@ public class Respuesta {
     public void setCorrecta(int correcta) {
         this.correcta = correcta;
     }
+
+    /**
+     * @param pregunta the pregunta to set
+     */
+    public void setPregunta(Pregunta pregunta) {
+        this.pregunta = pregunta;
+    }
     
 }

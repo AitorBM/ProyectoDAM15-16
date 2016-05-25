@@ -76,20 +76,22 @@ public class GPreguntas extends javax.swing.JFrame {
         initComponents();
         
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-        conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
+        //conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
         //conn = DriverManager.getConnection("jdbc:oracle:thin:@SrvOracle:1521:orcl", "noc08", "noc08");
-        //conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
+        conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
         System.out.println("INFO: Conexión abierta");
         
         Statement stmt = conn.createStatement();
             ResultSet rset = stmt.executeQuery("select * from categorias");
             while (rset.next()) {
                 Categoria c = new Categoria();
-                c.setId(Integer.parseInt(rset.getString(1)));
+                c.setId(rset.getInt(1));
                 c.setNombre(rset.getString(2));
                 cat.add(c);
             }
             stmt.close();
+            
+            ActualizarPreguntas();
             
             stmt = conn.createStatement();
             rset = stmt.executeQuery("select * from respuestas");
@@ -98,11 +100,14 @@ public class GPreguntas extends javax.swing.JFrame {
                 r.setId(Integer.parseInt(rset.getString(1)));
                 r.setTexto(rset.getString(2));
                 r.setCorrecta(rset.getInt(3));
+                int np = rset.getInt(4);
+                r.setPregunta(pre.get(np-1));
+                pre.get(np-1).addRespuesta(r);
                 res.add(r);
             }
             stmt.close();
             
-            ActualizarPreguntas();
+            
             
             jcbCategoriaCB.removeAllItems();
                 for (Categoria cate : cat) {
@@ -115,12 +120,32 @@ public class GPreguntas extends javax.swing.JFrame {
                 jtfTexto.setText(pre.get(n).getTexto());
                 jtfCategoria.setText(pre.get(n).getCategoria().getNombre());
                 jtfRes1.setText(pre.get(n).getRespuestas().get(0).getTexto());
-                if (pre.get(n).getRespuestas().get(0).getCorrecta() == 0) {
-                    
+                if (pre.get(n).getRespuestas().get(0).getCorrecta() == 1) {
+                    jrbCorrecta1.setSelected(true);
+                }
+                jtfRes2.setText(pre.get(n).getRespuestas().get(1).getTexto());
+                if (pre.get(n).getRespuestas().get(1).getCorrecta() == 1) {
+                    jrbCorrecta2.setSelected(true);
+                }
+                jtfRes3.setText(pre.get(n).getRespuestas().get(2).getTexto());
+                if (pre.get(n).getRespuestas().get(2).getCorrecta() == 1) {
+                    jrbCorrecta3.setSelected(true);
+                }
+                jtfRes4.setText(pre.get(n).getRespuestas().get(3).getTexto());
+                if (pre.get(n).getRespuestas().get(3).getCorrecta() == 1) {
+                    jrbCorrecta4.setSelected(true);
                 }
                 jtfID.setEditable(false);
                 jtfTexto.setEditable(false);
                 jtfCategoria.setEditable(false);
+                jtfRes1.setEditable(false);
+                jtfRes2.setEditable(false);
+                jtfRes3.setEditable(false);
+                jtfRes4.setEditable(false);
+                jrbCorrecta1.setEnabled(false);
+                jrbCorrecta2.setEnabled(false);
+                jrbCorrecta3.setEnabled(false);
+                jrbCorrecta4.setEnabled(false);
                 jbLimpiar.setVisible(false);
                 jlCategoriaCB.setVisible(false);
                 jcbCategoriaCB.setVisible(false);
@@ -230,9 +255,9 @@ public class GPreguntas extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jbAtras)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jlCategoriaCB)
@@ -250,14 +275,14 @@ public class GPreguntas extends javax.swing.JFrame {
                         .addComponent(jlCategoria)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jtfCategoria)))
-                .addGap(14, 14, 14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jbAlante)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jtfID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -275,7 +300,7 @@ public class GPreguntas extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlCategoriaCB)
                     .addComponent(jcbCategoriaCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jbAceptar.setText("Aceptar");
@@ -348,7 +373,7 @@ public class GPreguntas extends javax.swing.JFrame {
                         .addComponent(jtfRes4))
                     .addGroup(jpRespuestasLayout.createSequentialGroup()
                         .addComponent(jLabel8)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 149, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpRespuestasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -392,29 +417,26 @@ public class GPreguntas extends javax.swing.JFrame {
                                 .addComponent(jtfRes3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jrbCorrecta4)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(63, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jpRespuestas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jbCancelar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jbLimpiar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jbAceptar)))
-                .addContainerGap())
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jbCancelar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jbLimpiar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jbAceptar))
+                        .addComponent(jpRespuestas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -428,7 +450,7 @@ public class GPreguntas extends javax.swing.JFrame {
                     .addComponent(jbAceptar)
                     .addComponent(jbLimpiar)
                     .addComponent(jbCancelar))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -442,6 +464,24 @@ public class GPreguntas extends javax.swing.JFrame {
             jtfID.setText(String.valueOf(pre.get(n).getId()));
             jtfTexto.setText(pre.get(n).getTexto());
             jtfCategoria.setText(pre.get(n).getCategoria().getNombre());
+            if (jpRespuestas.isVisible() == true) {
+                jtfRes1.setText(pre.get(n).getRespuestas().get(0).getTexto());
+                if (pre.get(n).getRespuestas().get(0).getCorrecta() == 1) {
+                    jrbCorrecta1.setSelected(true);
+                }
+                jtfRes2.setText(pre.get(n).getRespuestas().get(1).getTexto());
+                if (pre.get(n).getRespuestas().get(1).getCorrecta() == 1) {
+                    jrbCorrecta2.setSelected(true);
+                }
+                jtfRes3.setText(pre.get(n).getRespuestas().get(2).getTexto());
+                if (pre.get(n).getRespuestas().get(2).getCorrecta() == 1) {
+                    jrbCorrecta3.setSelected(true);
+                }
+                jtfRes4.setText(pre.get(n).getRespuestas().get(3).getTexto());
+                if (pre.get(n).getRespuestas().get(3).getCorrecta() == 1) {
+                    jrbCorrecta4.setSelected(true);
+                }
+            }
         }
     }//GEN-LAST:event_jbAtrasActionPerformed
 
@@ -452,6 +492,24 @@ public class GPreguntas extends javax.swing.JFrame {
             jtfID.setText(String.valueOf(pre.get(n).getId()));
             jtfTexto.setText(pre.get(n).getTexto());
             jtfCategoria.setText(pre.get(n).getCategoria().getNombre());
+            if (jpRespuestas.isVisible() == true) {
+                jtfRes1.setText(pre.get(n).getRespuestas().get(0).getTexto());
+                if (pre.get(n).getRespuestas().get(0).getCorrecta() == 1) {
+                    jrbCorrecta1.setSelected(true);
+                }
+                jtfRes2.setText(pre.get(n).getRespuestas().get(1).getTexto());
+                if (pre.get(n).getRespuestas().get(1).getCorrecta() == 1) {
+                    jrbCorrecta2.setSelected(true);
+                }
+                jtfRes3.setText(pre.get(n).getRespuestas().get(2).getTexto());
+                if (pre.get(n).getRespuestas().get(2).getCorrecta() == 1) {
+                    jrbCorrecta3.setSelected(true);
+                }
+                jtfRes4.setText(pre.get(n).getRespuestas().get(3).getTexto());
+                if (pre.get(n).getRespuestas().get(3).getCorrecta() == 1) {
+                    jrbCorrecta4.setSelected(true);
+                }
+            }
         }
     }//GEN-LAST:event_jbAlanteActionPerformed
 
@@ -481,7 +539,6 @@ public class GPreguntas extends javax.swing.JFrame {
                     System.out.println("ERROR: No se ha podido ejecutar la consulta");
                     Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
                 this.dispose();
                 break;
             case 2:
@@ -524,6 +581,10 @@ public class GPreguntas extends javax.swing.JFrame {
         jtfID.setText("");
         jtfTexto.setText("");
         jtfCategoria.setText("");
+        jtfRes1.setText("");
+        jtfRes2.setText("");
+        jtfRes3.setText("");
+        jtfRes4.setText("");
     }//GEN-LAST:event_jbLimpiarActionPerformed
 
     private void jbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarActionPerformed

@@ -67,5 +67,12 @@ public class Pregunta {
     public List<Respuesta> getRespuestas() {
         return respuestas;
     }
+
+    /**
+     * @param respuesta the respuestas to set
+     */
+    public void addRespuesta(Respuesta respuesta) {
+        this.respuestas.add(respuesta);
+    }
     
 }
