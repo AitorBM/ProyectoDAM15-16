@@ -18,8 +18,7 @@ public class VPreguntas extends javax.swing.JFrame {
     /**
      * Creates new form VPreguntas
      */
-    
-    private void EjecutarAccion(int i){
+    private void EjecutarAccion(int i) {
         try {
             // TODO add your handling code here:
             GPreguntas gestorPreguntas = new GPreguntas(i);
@@ -28,7 +27,7 @@ public class VPreguntas extends javax.swing.JFrame {
             Logger.getLogger(VCategorias.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public VPreguntas() {
         initComponents();
     }

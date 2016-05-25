@@ -14,14 +14,15 @@ import java.util.logging.Logger;
  * @author 7fprog08
  */
 public class VP extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form VP
+     *
      * @throws java.sql.SQLException
      */
     public VP() throws SQLException {
         initComponents();
-        
+
         //Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
     }
 
@@ -39,8 +40,8 @@ public class VP extends javax.swing.JFrame {
         jbCategorias = new javax.swing.JButton();
         jbPreguntas = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        jbExportarCategoria = new javax.swing.JButton();
+        jbExportarLibre = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -62,9 +63,19 @@ public class VP extends javax.swing.JFrame {
 
         jLabel2.setText("Exportado:");
 
-        jButton4.setText("Por categoría");
+        jbExportarCategoria.setText("Por categoría");
+        jbExportarCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbExportarCategoriaActionPerformed(evt);
+            }
+        });
 
-        jButton5.setText("Libre");
+        jbExportarLibre.setText("Libre");
+        jbExportarLibre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbExportarLibreActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpPrincipalLayout = new javax.swing.GroupLayout(jpPrincipal);
         jpPrincipal.setLayout(jpPrincipalLayout);
@@ -78,8 +89,8 @@ public class VP extends javax.swing.JFrame {
                     .addGroup(jpPrincipalLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addGroup(jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jbExportarCategoria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jbExportarLibre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jbPreguntas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jbCategorias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -96,9 +107,9 @@ public class VP extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
+                .addComponent(jbExportarCategoria)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5)
+                .addComponent(jbExportarLibre)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -135,51 +146,27 @@ public class VP extends javax.swing.JFrame {
         vPre.setVisible(true);
     }//GEN-LAST:event_jbPreguntasActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+    private void jbExportarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExportarCategoriaActionPerformed
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VP.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            // TODO add your handling code here:
+            VExportarCat vECat = new VExportarCat();
+            vECat.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(VP.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+    }//GEN-LAST:event_jbExportarCategoriaActionPerformed
+
+    private void jbExportarLibreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExportarLibreActionPerformed
+        // TODO add your handling code here:
         
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new VP().setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(VP.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+    }//GEN-LAST:event_jbExportarLibreActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JButton jbCategorias;
+    private javax.swing.JButton jbExportarCategoria;
+    private javax.swing.JButton jbExportarLibre;
     private javax.swing.JButton jbPreguntas;
     private javax.swing.JPanel jpPrincipal;
     // End of variables declaration//GEN-END:variables

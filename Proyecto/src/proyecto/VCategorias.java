@@ -18,6 +18,16 @@ public class VCategorias extends javax.swing.JFrame {
     /**
      * Creates new form VCategorias
      */
+    private void ejecutarAccion(int i) {
+        try {
+            // TODO add your handling code here:
+            GCategorias gestorCategorias = new GCategorias(i);
+            gestorCategorias.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(VCategorias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public VCategorias() {
         initComponents();
     }
@@ -123,45 +133,21 @@ public class VCategorias extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbAnadirCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAnadirCategoriaActionPerformed
-        try {
-            // TODO add your handling code here:
-            GCategorias gestorCategorias = new GCategorias(1);
-            gestorCategorias.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(VCategorias.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ejecutarAccion(1);
     }//GEN-LAST:event_jbAnadirCategoriaActionPerformed
 
     private void jbVisualizarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbVisualizarCategoriaActionPerformed
-        try {
-            // TODO add your handling code here:
-            GCategorias gestorCategorias = new GCategorias(0);
-            gestorCategorias.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(VCategorias.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ejecutarAccion(0);
     }//GEN-LAST:event_jbVisualizarCategoriaActionPerformed
 
     private void jbEliminarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarCategoriaActionPerformed
         // TODO add your handling code here:
-        try {
-            // TODO add your handling code here:
-            GCategorias gestorCategorias = new GCategorias(3);
-            gestorCategorias.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(VCategorias.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ejecutarAccion(3);
     }//GEN-LAST:event_jbEliminarCategoriaActionPerformed
 
     private void jbMoficarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbMoficarCategoriaActionPerformed
         // TODO add your handling code here:
-        try {
-            // TODO add your handling code here:
-            GCategorias gestorCategorias = new GCategorias(2);
-            gestorCategorias.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(VCategorias.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ejecutarAccion(2);
     }//GEN-LAST:event_jbMoficarCategoriaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -54,8 +54,8 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jButton4" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jButton5" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jbExportarCategoria" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jbExportarLibre" alignment="0" max="32767" attributes="0"/>
                               <Component id="jbPreguntas" alignment="0" max="32767" attributes="0"/>
                               <Component id="jbCategorias" alignment="0" max="32767" attributes="0"/>
                           </Group>
@@ -77,9 +77,9 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButton4" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbExportarCategoria" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jButton5" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbExportarLibre" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -112,15 +112,21 @@
             <Property name="text" type="java.lang.String" value="Exportado:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton4">
+        <Component class="javax.swing.JButton" name="jbExportarCategoria">
           <Properties>
             <Property name="text" type="java.lang.String" value="Por categor&#xed;a"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbExportarCategoriaActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton5">
+        <Component class="javax.swing.JButton" name="jbExportarLibre">
           <Properties>
             <Property name="text" type="java.lang.String" value="Libre"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbExportarLibreActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,33 +25,34 @@ public class GCategorias extends javax.swing.JFrame {
 
     /**
      * Creates new form GCategorias
+     *
      * @throws java.sql.SQLException
      */
     private Connection conn;
     private int opcion;
     private int n = 0;
     private List<Categoria> cat = new ArrayList<>();
-    
+
     public GCategorias(int opcion) throws SQLException {
         this.opcion = opcion;
         initComponents();
-        
+
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-        //conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
+        conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
         //conn = DriverManager.getConnection("jdbc:oracle:thin:@SrvOracle:1521:orcl", "noc08", "noc08");
-        conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
+        //conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
         System.out.println("INFO: Conexión abierta");
-        
+
         Statement stmt = conn.createStatement();
-            ResultSet rset = stmt.executeQuery("select * from categorias");
-            while (rset.next()) {
-                Categoria c = new Categoria();
-                c.setId(Integer.parseInt(rset.getString(1)));
-                c.setNombre(rset.getString(2));
-                cat.add(c);
-            }
-            stmt.close();
-        
+        ResultSet rset = stmt.executeQuery("select * from categorias");
+        while (rset.next()) {
+            Categoria c = new Categoria();
+            c.setId(Integer.parseInt(rset.getString(1)));
+            c.setNombre(rset.getString(2));
+            cat.add(c);
+        }
+        stmt.close();
+
         switch (opcion) {
             case 0:
                 jtfID.setText(String.valueOf(cat.get(n).getId()));
@@ -59,25 +61,26 @@ public class GCategorias extends javax.swing.JFrame {
                 jtfNombre.setEditable(false);
                 jbLimpiar.setVisible(false);
                 break;
-                
+
             case 1:
                 jbAtras.setVisible(false);
                 jbAlante.setVisible(false);
                 jtfID.setEnabled(false);
                 break;
-                
+
             case 2:
                 jtfID.setText(String.valueOf(cat.get(n).getId()));
                 jtfNombre.setText(cat.get(n).getNombre());
                 jtfID.setEditable(false);
                 break;
-                
+
             case 3:
                 jtfID.setText(String.valueOf(cat.get(n).getId()));
                 jtfNombre.setText(cat.get(n).getNombre());
                 jtfID.setEditable(false);
                 jtfNombre.setEditable(false);
                 jbLimpiar.setVisible(false);
+                JOptionPane.showMessageDialog(this, "No podrás borrar una categoria que tenga preguntas asociadas.");
                 break;
             default:
                 throw new AssertionError();
@@ -243,7 +246,7 @@ public class GCategorias extends javax.swing.JFrame {
             case 0:
                 this.dispose();
                 break;
-                
+
             case 1:
                 String sql = "{ CALL GEST_PROYECTO_GIFT.INSERT_CATEGORIA(?) }";
                 CallableStatement cs;
@@ -259,7 +262,7 @@ public class GCategorias extends javax.swing.JFrame {
                 }
                 this.dispose();
                 break;
-                
+
             case 2:
                 sql = "{ CALL GEST_PROYECTO_GIFT.UPDATE_CATEGORIA(?,?) }";
                 try {
@@ -275,7 +278,7 @@ public class GCategorias extends javax.swing.JFrame {
                 }
                 this.dispose();
                 break;
-                
+
             case 3:
                 sql = "{ CALL GEST_PROYECTO_GIFT.DELETE_CATEGORIA(?) }";
                 try {
@@ -288,7 +291,7 @@ public class GCategorias extends javax.swing.JFrame {
                     System.out.println("ERROR: No se ha podido ejecutar la consulta");
                     Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 this.dispose();
                 break;
             default:
@@ -298,24 +301,26 @@ public class GCategorias extends javax.swing.JFrame {
 
     private void jbLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbLimpiarActionPerformed
         // TODO add your handling code here:
-        jtfID.setText("");
+        if (opcion != 2) {
+            jtfID.setText("");
+        }
         jtfNombre.setText("");
     }//GEN-LAST:event_jbLimpiarActionPerformed
 
     private void jbAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAtrasActionPerformed
         // TODO add your handling code here:
         if (n > 0) {
-            n-=1;
+            n -= 1;
             jtfID.setText(String.valueOf(cat.get(n).getId()));
             jtfNombre.setText(cat.get(n).getNombre());
         }
-        
+
     }//GEN-LAST:event_jbAtrasActionPerformed
 
     private void jbAlanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAlanteActionPerformed
         // TODO add your handling code here:
-        if (n < cat.size()-1) {
-            n+=1;
+        if (n < cat.size() - 1) {
+            n += 1;
             jtfID.setText(String.valueOf(cat.get(n).getId()));
             jtfNombre.setText(cat.get(n).getNombre());
         }

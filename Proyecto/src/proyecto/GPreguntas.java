@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -33,87 +34,106 @@ public class GPreguntas extends javax.swing.JFrame {
     private List<Pregunta> pre = new ArrayList<>();
     private List<Categoria> cat = new ArrayList<>();
     private List<Respuesta> res = new ArrayList<>();
-    
-    private void ActualizarPreguntas() throws SQLException{
+
+    private void ActualizarPreguntas() throws SQLException {
         int i;
         Statement stmt = conn.createStatement();
         ResultSet rset = stmt.executeQuery("select * from preguntas");
-            while (rset.next()) {
-                Pregunta p = new Pregunta();
-                p.setId(Integer.parseInt(rset.getString(1)));
-                p.setTexto(rset.getString(2));
-                i = Integer.parseInt(rset.getString(3));
-                p.setCategoria(cat.get(i-1));
-                pre.add(p);
-            }
-            stmt.close();
+        while (rset.next()) {
+            Pregunta p = new Pregunta();
+            p.setId(Integer.parseInt(rset.getString(1)));
+            p.setTexto(rset.getString(2));
+            i = Integer.parseInt(rset.getString(3));
+            p.setCategoria(cat.get(i - 1));
+            pre.add(p);
+        }
+        stmt.close();
     }
-    
-    private void addRes(JRadioButton rb, JTextField tf) throws SQLException{
+
+    private void addRes(JRadioButton rb, JTextField tf) throws SQLException {
         int correcta = 0;
         if (rb.isSelected()) {
             correcta = 1;
         }
-        int respuesta = pre.get(pre.size()-1).getId();
+        int respuesta = pre.get(pre.size() - 1).getId();
         String sql = "{ CALL GEST_PROYECTO_GIFT.INSERT_RESPUESTA(?,?,?) }";
         CallableStatement cs;
-                    try {
-                    cs = conn.prepareCall(sql);
-                    cs.setInt(1, respuesta);
-                    cs.setString(2, tf.getText());
-                    cs.setInt(3, correcta);
-                    cs.execute();
-                    System.out.println("INFO: Procedimiento ejecutado");
-                    } catch (SQLException ex) {
-                    System.out.println("ERROR: No se ha podido ejecutar la consulta");
-                    Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+        try {
+            cs = conn.prepareCall(sql);
+            cs.setInt(1, respuesta);
+            cs.setString(2, tf.getText());
+            cs.setInt(3, correcta);
+            cs.execute();
+            System.out.println("INFO: Procedimiento ejecutado");
+        } catch (SQLException ex) {
+            System.out.println("ERROR: No se ha podido ejecutar la consulta");
+            Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
+    private void updateRes(JRadioButton rb, JTextField tf, int i) throws SQLException {
+        int correcta = 0;
+        if (rb.isSelected()) {
+            correcta = 1;
+        }
+        int respuesta = pre.get(n).getRespuestas().get(i).getId();
+        String sql = "{ CALL GEST_PROYECTO_GIFT.UPDATE_RESPUESTA(?,?,?) }";
+        CallableStatement cs;
+        try {
+            cs = conn.prepareCall(sql);
+            cs.setInt(1, respuesta);
+            cs.setString(2, tf.getText());
+            cs.setInt(3, correcta);
+            cs.execute();
+            System.out.println("INFO: Procedimiento ejecutado");
+        } catch (SQLException ex) {
+            System.out.println("ERROR: No se ha podido ejecutar la consulta");
+            Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public GPreguntas(int opcion) throws SQLException {
         this.opcion = opcion;
-        
+
         initComponents();
-        
+
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-        //conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
+        conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
         //conn = DriverManager.getConnection("jdbc:oracle:thin:@SrvOracle:1521:orcl", "noc08", "noc08");
-        conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
+        //conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
         System.out.println("INFO: Conexión abierta");
-        
+
         Statement stmt = conn.createStatement();
-            ResultSet rset = stmt.executeQuery("select * from categorias");
-            while (rset.next()) {
-                Categoria c = new Categoria();
-                c.setId(rset.getInt(1));
-                c.setNombre(rset.getString(2));
-                cat.add(c);
-            }
-            stmt.close();
-            
-            ActualizarPreguntas();
-            
-            stmt = conn.createStatement();
-            rset = stmt.executeQuery("select * from respuestas");
-            while (rset.next()) {
-                Respuesta r = new Respuesta();
-                r.setId(Integer.parseInt(rset.getString(1)));
-                r.setTexto(rset.getString(2));
-                r.setCorrecta(rset.getInt(3));
-                int np = rset.getInt(4);
-                r.setPregunta(pre.get(np-1));
-                pre.get(np-1).addRespuesta(r);
-                res.add(r);
-            }
-            stmt.close();
-            
-            
-            
-            jcbCategoriaCB.removeAllItems();
-                for (Categoria cate : cat) {
-                    jcbCategoriaCB.addItem(cate.getNombre());
-                }
-            
+        ResultSet rset = stmt.executeQuery("select * from categorias");
+        while (rset.next()) {
+            Categoria c = new Categoria();
+            c.setId(rset.getInt(1));
+            c.setNombre(rset.getString(2));
+            cat.add(c);
+        }
+        stmt.close();
+
+        ActualizarPreguntas();
+
+        stmt = conn.createStatement();
+        rset = stmt.executeQuery("select * from respuestas");
+        while (rset.next()) {
+            Respuesta r = new Respuesta();
+            r.setId(Integer.parseInt(rset.getString(1)));
+            r.setTexto(rset.getString(2));
+            r.setCorrecta(rset.getInt(3));
+            int np = rset.getInt(4);
+            r.setPregunta(pre.get(np - 1));
+            pre.get(np - 1).addRespuesta(r);
+            res.add(r);
+        }
+        stmt.close();
+
+        jcbCategoriaCB.removeAllItems();
+        for (Categoria cate : cat) {
+            jcbCategoriaCB.addItem(cate.getNombre());
+        }
+
         switch (opcion) {
             case 0:
                 jtfID.setText(String.valueOf(pre.get(n).getId()));
@@ -161,11 +181,26 @@ public class GPreguntas extends javax.swing.JFrame {
                 jtfID.setText(String.valueOf(pre.get(n).getId()));
                 jtfTexto.setText(pre.get(n).getTexto());
                 jtfCategoria.setText(pre.get(n).getCategoria().getNombre());
+                jtfRes1.setText(pre.get(n).getRespuestas().get(0).getTexto());
+                if (pre.get(n).getRespuestas().get(0).getCorrecta() == 1) {
+                    jrbCorrecta1.setSelected(true);
+                }
+                jtfRes2.setText(pre.get(n).getRespuestas().get(1).getTexto());
+                if (pre.get(n).getRespuestas().get(1).getCorrecta() == 1) {
+                    jrbCorrecta2.setSelected(true);
+                }
+                jtfRes3.setText(pre.get(n).getRespuestas().get(2).getTexto());
+                if (pre.get(n).getRespuestas().get(2).getCorrecta() == 1) {
+                    jrbCorrecta3.setSelected(true);
+                }
+                jtfRes4.setText(pre.get(n).getRespuestas().get(3).getTexto());
+                if (pre.get(n).getRespuestas().get(3).getCorrecta() == 1) {
+                    jrbCorrecta4.setSelected(true);
+                }
                 jtfID.setEditable(false);
                 jtfCategoria.setEditable(false);
                 jlCategoriaCB.setVisible(false);
                 jcbCategoriaCB.setVisible(false);
-                jpRespuestas.setVisible(false);
                 break;
             case 3:
                 jtfID.setText(String.valueOf(pre.get(n).getId()));
@@ -178,6 +213,7 @@ public class GPreguntas extends javax.swing.JFrame {
                 jlCategoriaCB.setVisible(false);
                 jcbCategoriaCB.setVisible(false);
                 jpRespuestas.setVisible(false);
+                JOptionPane.showMessageDialog(this, "CUIDADO. Al borrar la pregunta también borraras las respuestas.");
                 break;
             default:
                 throw new AssertionError();
@@ -460,7 +496,7 @@ public class GPreguntas extends javax.swing.JFrame {
     private void jbAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAtrasActionPerformed
         // TODO add your handling code here:
         if (n > 0) {
-            n-=1;
+            n -= 1;
             jtfID.setText(String.valueOf(pre.get(n).getId()));
             jtfTexto.setText(pre.get(n).getTexto());
             jtfCategoria.setText(pre.get(n).getCategoria().getNombre());
@@ -487,8 +523,8 @@ public class GPreguntas extends javax.swing.JFrame {
 
     private void jbAlanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAlanteActionPerformed
         // TODO add your handling code here:
-        if (n < pre.size()-1) {
-            n+=1;
+        if (n < pre.size() - 1) {
+            n += 1;
             jtfID.setText(String.valueOf(pre.get(n).getId()));
             jtfTexto.setText(pre.get(n).getTexto());
             jtfCategoria.setText(pre.get(n).getCategoria().getNombre());
@@ -548,6 +584,10 @@ public class GPreguntas extends javax.swing.JFrame {
                     cs.setInt(1, pre.get(n).getId());
                     cs.setString(2, jtfTexto.getText());
                     cs.execute();
+                    updateRes(jrbCorrecta1, jtfRes1, 0);
+                    updateRes(jrbCorrecta2, jtfRes2, 1);
+                    updateRes(jrbCorrecta3, jtfRes3, 2);
+                    updateRes(jrbCorrecta4, jtfRes4, 3);
                     conn.close();
                     System.out.println("INFO: Procedimiento ejecutado");
                 } catch (SQLException ex) {
@@ -568,7 +608,7 @@ public class GPreguntas extends javax.swing.JFrame {
                     System.out.println("ERROR: No se ha podido ejecutar la consulta");
                     Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 this.dispose();
                 break;
             default:
