@@ -43,9 +43,10 @@ public class VExportarCat extends javax.swing.JFrame {
             pre.add(p);
 
             c.getPreguntas().add(p);
-            cat.add(c);
+       
             actualizarRespuestas(p);
         }
+             cat.add(c);
         stmt.close();
     }
 
