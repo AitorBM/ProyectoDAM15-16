@@ -15,6 +15,9 @@ import java.util.logging.Logger;
  */
 public class VP extends javax.swing.JFrame {
 
+    private int exportadosCat = 0;
+    private int exportadosLib = 0;
+
     /**
      * Creates new form VP
      *
@@ -148,7 +151,7 @@ public class VP extends javax.swing.JFrame {
 
     private void jbExportarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExportarCategoriaActionPerformed
         try {
-            VExportarCat vECat = new VExportarCat();
+            VExportarCat vECat = new VExportarCat(this);
             vECat.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(VP.class.getName()).log(Level.SEVERE, null, ex);
@@ -158,7 +161,7 @@ public class VP extends javax.swing.JFrame {
     private void jbExportarLibreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExportarLibreActionPerformed
         // TODO add your handling code here:
         try {
-            VExportarLibre vELib = new VExportarLibre();
+            VExportarLibre vELib = new VExportarLibre(this);
             vELib.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(VP.class.getName()).log(Level.SEVERE, null, ex);
@@ -174,4 +177,32 @@ public class VP extends javax.swing.JFrame {
     private javax.swing.JButton jbPreguntas;
     private javax.swing.JPanel jpPrincipal;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the exportadosCat
+     */
+    public int getExportadosCat() {
+        return exportadosCat;
+    }
+
+    /**
+     * @param exportadosCat the exportadosCat to set
+     */
+    public void setExportadosCat(int exportadosCat) {
+        this.exportadosCat = exportadosCat;
+    }
+
+    /**
+     * @return the exportadosLib
+     */
+    public int getExportadosLib() {
+        return exportadosLib;
+    }
+
+    /**
+     * @param exportadosLib the exportadosLib to set
+     */
+    public void setExportadosLib(int exportadosLib) {
+        this.exportadosLib = exportadosLib;
+    }
 }

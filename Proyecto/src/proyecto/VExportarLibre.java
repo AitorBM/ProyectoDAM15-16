@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,9 +28,9 @@ public class VExportarLibre extends javax.swing.JFrame {
 
     private Connection conn;
     private int n = 0;
-    private int exportados = 0;
     private List<Pregunta> pre = new ArrayList<>();
     private List<Respuesta> res = new ArrayList<>();
+    private VP padre;
 
     private void actualizarRespuestas(Pregunta p) throws SQLException {
         Statement stmt = conn.createStatement();
@@ -50,13 +51,18 @@ public class VExportarLibre extends javax.swing.JFrame {
     /**
      * Creates new form VExpotarLibre
      */
-    public VExportarLibre() throws SQLException {
+    public VExportarLibre(VP vp) throws SQLException {
+        padre = vp;
+        
         initComponents();
 
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-        //conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
-        //conn = DriverManager.getConnection("jdbc:oracle:thin:@SrvOracle:1521:orcl", "noc08", "noc08");
-        conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
+        //Conexion maquina vagrant
+        conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
+        /*
+        Conexion server egibide -> conn = DriverManager.getConnection("jdbc:oracle:thin:@SrvOracle:1521:orcl", "noc08", "noc08");
+        Conexion en mi casa -> conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
+        */
         System.out.println("INFO: Conexión abierta");
 
         Statement stmt = conn.createStatement();
@@ -241,7 +247,7 @@ public class VExportarLibre extends javax.swing.JFrame {
         FileOutputStream f0 = null;
         explorador.setVisible(true);
         try {
-            f0 = new FileOutputStream("../PreguntasLibre" + exportados + ".gift");
+            f0 = new FileOutputStream("../PreguntasLibre" + padre.getExportadosLib() + ".gift");
             f0.write(buffer);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(VExportarCat.class.getName()).log(Level.SEVERE, null, ex);
@@ -251,9 +257,12 @@ public class VExportarLibre extends javax.swing.JFrame {
         try {
             if (f0 != null) {
                 f0.close();
+                padre.setExportadosLib(padre.getExportadosLib()+1);
             }
+            JOptionPane.showMessageDialog(this, "Pregunta/s exportada/s correctamente\nen la carpeta que contiene el proyecto.");
         } catch (IOException e) {
             System.out.println("ERROR: No se puede cerrar f1.txt");
+            JOptionPane.showMessageDialog(this, "No se ha/n podido exportar correctamente las preguntas.ñ");
         }
         this.dispose();
     }//GEN-LAST:event_jbExportarActionPerformed

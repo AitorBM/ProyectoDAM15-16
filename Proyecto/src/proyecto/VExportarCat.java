@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,10 +27,10 @@ import javax.swing.JFileChooser;
 public class VExportarCat extends javax.swing.JFrame {
 
     private Connection conn;
-    private int exportados = 0;
     private List<Pregunta> pre = new ArrayList<>();
     private List<Categoria> cat = new ArrayList<>();
     private List<Respuesta> res = new ArrayList<>();
+    private VP padre;
 
     private void ActualizarPreguntas(Categoria c) throws SQLException {
         Statement stmt = conn.createStatement();
@@ -66,15 +67,20 @@ public class VExportarCat extends javax.swing.JFrame {
 
     /**
      * Creates new form VExportar
+     * @throws java.sql.SQLException
      */
-    public VExportarCat() throws SQLException {
-
+    public VExportarCat(VP vp) throws SQLException {
+        padre = vp;
+        
         initComponents();
 
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-        //conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
-        //conn = DriverManager.getConnection("jdbc:oracle:thin:@SrvOracle:1521:orcl", "noc08", "noc08");
-        conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
+        //Conexion maquina vagrant
+        conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
+        /*
+        Conexion server egibide -> conn = DriverManager.getConnection("jdbc:oracle:thin:@SrvOracle:1521:orcl", "noc08", "noc08");
+        Conexion en mi casa -> conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
+        */
         System.out.println("INFO: Conexión abierta");
 
         Statement stmt = conn.createStatement();
@@ -201,7 +207,7 @@ public class VExportarCat extends javax.swing.JFrame {
         FileOutputStream f0 = null;
         explorador.setVisible(true);
         try {
-            f0 = new FileOutputStream("../PreguntasCategoria" + exportados + ".gift");
+            f0 = new FileOutputStream("../PreguntasCategoria" + padre.getExportadosCat() + ".gift");
             f0.write(buffer);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(VExportarCat.class.getName()).log(Level.SEVERE, null, ex);
@@ -211,9 +217,12 @@ public class VExportarCat extends javax.swing.JFrame {
         try {
             if (f0 != null) {
                 f0.close();
+                padre.setExportadosCat(padre.getExportadosCat()+1);
             }
+            JOptionPane.showMessageDialog(this, "Categoria exportada correctamente.\nen la carpeta que contiene el proyecto");
         } catch (IOException e) {
             System.out.println("ERROR: No se puede cerrar f1.txt");
+            JOptionPane.showMessageDialog(this, "No se a podido exportar correctamente la categoria.");
         }
         this.dispose();
     }//GEN-LAST:event_jbAceptarActionPerformed

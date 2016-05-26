@@ -38,9 +38,12 @@ public class GCategorias extends javax.swing.JFrame {
         initComponents();
 
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-        //conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
-        //conn = DriverManager.getConnection("jdbc:oracle:thin:@SrvOracle:1521:orcl", "noc08", "noc08");
-        conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
+        //Conexion maquina vagrant
+        conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
+        /*
+        Conexion server egibide -> conn = DriverManager.getConnection("jdbc:oracle:thin:@SrvOracle:1521:orcl", "noc08", "noc08");
+        Conexion en mi casa -> conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
+        */
         System.out.println("INFO: Conexión abierta");
 
         Statement stmt = conn.createStatement();
@@ -256,8 +259,10 @@ public class GCategorias extends javax.swing.JFrame {
                     cs.execute();
                     conn.close();
                     System.out.println("INFO: Procedimiento ejecutado");
+                    JOptionPane.showMessageDialog(this, "Categoria añadida correctamente.");
                 } catch (SQLException ex) {
                     System.out.println("ERROR: No se ha podido ejecutar la consulta");
+                    JOptionPane.showMessageDialog(this, "ERROR. No se a podido añadir la categoria correctamente.");
                     Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 this.dispose();
@@ -272,8 +277,10 @@ public class GCategorias extends javax.swing.JFrame {
                     cs.execute();
                     conn.close();
                     System.out.println("INFO: Procedimiento ejecutado");
+                    JOptionPane.showMessageDialog(this, "Categoria modificada correctamente.");
                 } catch (SQLException ex) {
                     System.out.println("ERROR: No se ha podido ejecutar la consulta");
+                    JOptionPane.showMessageDialog(this, "No se a podido modificar la categoria correctametne.");
                     Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 this.dispose();
@@ -287,8 +294,10 @@ public class GCategorias extends javax.swing.JFrame {
                     cs.execute();
                     conn.close();
                     System.out.println("INFO: Procedimiento ejecutado");
+                    JOptionPane.showMessageDialog(this, "Categoria eliminada correctamente.");
                 } catch (SQLException ex) {
                     System.out.println("ERROR: No se ha podido ejecutar la consulta");
+                    JOptionPane.showMessageDialog(this, "No se a podido eliminar la categoria correctamente.");
                     Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
