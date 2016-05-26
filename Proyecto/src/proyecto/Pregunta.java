@@ -13,9 +13,10 @@ import java.util.List;
  * @author AitorBM
  */
 public class Pregunta {
+
     private int id;
     private String texto;
-    
+
     private List<Respuesta> respuestas = new ArrayList<>();
     private Categoria categoria;
 
@@ -74,5 +75,5 @@ public class Pregunta {
     public void addRespuesta(Respuesta respuesta) {
         this.respuestas.add(respuesta);
     }
-    
+
 }

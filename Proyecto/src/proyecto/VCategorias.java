@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author 7FPROG08
+ * @author AitorBM
  */
 public class VCategorias extends javax.swing.JFrame {
 

@@ -13,9 +13,10 @@ import java.util.List;
  * @author AitorBM
  */
 public class Categoria {
+
     private int id;
     private String nombre;
-    
+
     private List<Pregunta> preguntas = new ArrayList<>();
 
     /**
@@ -52,5 +53,5 @@ public class Categoria {
     public List<Pregunta> getPreguntas() {
         return preguntas;
     }
-    
+
 }

@@ -10,10 +10,11 @@ package proyecto;
  * @author AitorBM
  */
 public class Respuesta {
+
     private int id;
     private String texto;
     private int correcta;
-    
+
     private Pregunta pregunta;
 
     /**
@@ -64,5 +65,5 @@ public class Respuesta {
     public void setPregunta(Pregunta pregunta) {
         this.pregunta = pregunta;
     }
-    
+
 }

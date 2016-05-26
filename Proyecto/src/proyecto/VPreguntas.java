@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Aitor
+ * @author AitorBM
  */
 public class VPreguntas extends javax.swing.JFrame {
 

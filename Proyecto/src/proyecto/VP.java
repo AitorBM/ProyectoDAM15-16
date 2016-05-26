@@ -11,10 +11,10 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author 7fprog08
+ * @author AitorBM
  */
 public class VP extends javax.swing.JFrame {
-    
+
     /**
      * Creates new form VP
      *
@@ -148,7 +148,6 @@ public class VP extends javax.swing.JFrame {
 
     private void jbExportarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExportarCategoriaActionPerformed
         try {
-            // TODO add your handling code here:
             VExportarCat vECat = new VExportarCat();
             vECat.setVisible(true);
         } catch (SQLException ex) {
@@ -158,7 +157,12 @@ public class VP extends javax.swing.JFrame {
 
     private void jbExportarLibreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExportarLibreActionPerformed
         // TODO add your handling code here:
-        
+        try {
+            VExportarLibre vELib = new VExportarLibre();
+            vELib.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(VP.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jbExportarLibreActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

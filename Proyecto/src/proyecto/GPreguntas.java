@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author 7FPROG08
+ * @author AitorBM
  */
 public class GPreguntas extends javax.swing.JFrame {
 
@@ -70,7 +70,7 @@ public class GPreguntas extends javax.swing.JFrame {
             Logger.getLogger(GCategorias.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void updateRes(JRadioButton rb, JTextField tf, int i) throws SQLException {
         int correcta = 0;
         if (rb.isSelected()) {
@@ -98,9 +98,9 @@ public class GPreguntas extends javax.swing.JFrame {
         initComponents();
 
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-        conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
+        //conn = DriverManager.getConnection("jdbc:oracle:thin:@10.10.10.9:1521:db12102", "system", "oracle");
         //conn = DriverManager.getConnection("jdbc:oracle:thin:@SrvOracle:1521:orcl", "noc08", "noc08");
-        //conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
+        conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.2.2:1521:orcl", "SYSTEM", "root");
         System.out.println("INFO: Conexión abierta");
 
         Statement stmt = conn.createStatement();

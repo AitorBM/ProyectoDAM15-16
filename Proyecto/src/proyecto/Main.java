@@ -6,7 +6,6 @@
 package proyecto;
 
 import java.sql.SQLException;
-import javax.swing.JFileChooser;
 
 /**
  *
@@ -22,7 +21,5 @@ public class Main {
         // TODO code application logic here
         VP ventanaPrincipal = new VP();
         ventanaPrincipal.setVisible(true);
-        
-        //JFileChooser
     }
 }
